@@ -40,7 +40,6 @@ function initCalculator() {
 
 }
 function initButtonGrid() {
-    let type;
     const buttons = document.querySelectorAll(".button-grid div");
     buttons.forEach( button => {
         button.style.gridArea = button.id; // Set grid placement
@@ -69,84 +68,56 @@ function receiveKeyboardInput(event) {
             key = "+";
             break;
     }
-    const index = keyIndexByKey(key);
-    executeKey(index);
+    if (keyIsValid(key)) executeKey(key);
 }
 
 function receiveMouseInput(event) {
-    const index = keyIndexById(this.id);
-    executeKey(index);
+    const key = keys[keyIndexById(this.id)].key;
+    if (keyIsValid(key)) executeKey(key);
 }
 
-function executeKey(index) {
-    if (index === -1) return;
-    const key = keys[index].key;
-    const type = keys[index].type;
+function executeKey(key) {
+    if (keyIsDisabled(key)) return;
+    const type = keys[keyIndexByKey(key)].type;
 
     switch (type) {
         case "number":
-            switch (operator) {
-                case "": 
-                    left = left + key;
-                    setDisplay(left);
-                    break;
-                case "=":
-                    operator = "";
-                    left = key;
-                    setDisplay(left);
-                    break;
-                default:
-                    right = right + key;
-                    setDisplay(right);
-                    break;
-            }
+            executeNumber(key);
             break;
         case "operator":
-            operate();
+            executeOperator();
             operator = key;
             break;
         case "command":
-            if (key == "ac") {
-                left = "";
-                operator = "";
-                right = "";
-                setDisplay(left);
+            if (key == "a") {
+                allClear();
             } else {
                 if (operator === "") {
                     if (key === "c") {
                         left = "";
+                        enableDecimal();
                     } else if (key === "bs") {
-                        left = left.substring(0,left.length-1);
+                        left = backspace(left);
                     }
                     setDisplay(left);
                 } else {
                     if (key === "c") {
                         right = "";
+                        enableDecimal();
                     } else if (key === "bs") {
-                        right = right.substring(0,right.length-1);
+                        right = backspace(right);
                     }
                     setDisplay(right);
                 }
             }
             break;
     }
-    console.log(left,operator,right);
 }
 
-function keyIndexById (id) {
-    return keys.findIndex(element => {return element.id === id});
-}
 
-function keyIndexByKey (key) {
-    return keys.findIndex(element => {return element.key === key});
-}
-
-function setDisplay (string) {
-    document.querySelector(".display").textContent = string;
-}
-
-function operate () {
+function executeOperator () {
     if (left === "" || right === "" || operator === "") return;
+
     left = Number(left);
     right = Number(right);
 
@@ -165,10 +136,63 @@ function operate () {
             result = divide(left,right);
             break;
     }
-    console.log(left,operator,right,result);
+    logResult(left,operator,right,result);
     left = result.toString();
     right = "";
     setDisplay(left);
+    enableDecimal();
+}
+
+function executeNumber (key) {
+    if (key === ".") disableDecimal();
+    switch (operator) {
+        case "": 
+            left = left + key;
+            setDisplay(left);
+            break;
+        case "=":
+            operator = "";
+            left = key;
+            setDisplay(left);
+            break;
+        default:
+            if (right === "") enableDecimal();
+            right = right + key;
+            setDisplay(right);
+            break;
+    }
+}
+
+function enableDecimal() {
+    const element = document.querySelector("#decimal");
+    element.classList.remove(".disabled");
+}
+
+function disableDecimal() {
+    const element = document.querySelector("#decimal");
+    element.classList.add(".disabled");
+}
+
+function keyIsDisabled(key) {
+    const id = "#"+keys[keyIndexByKey(key)].id;
+    return document.querySelector(id).classList.contains(".disabled");
+}
+
+function keyIsValid(key) {
+    let valid = keyIndexByKey(key) === -1 ? false : true;
+    return valid;
+}
+
+function keyIndexById (id) {
+    return keys.findIndex(element => {return element.id === id});
+}
+
+function keyIndexByKey (key) {
+    return keys.findIndex(element => {return element.key === key});
+}
+
+function setDisplay (string) {
+    document.querySelector(".display").textContent = string;
 }
 
 function add (a,b) {
@@ -185,4 +209,32 @@ function multiply (a,b) {
 
 function divide (a,b) {
     return a / b;
+}
+
+function logResult (left, operator, right, result) {
+    let newOperator = operator === "/" ? "÷" : operator;
+    let output = `${left} ${newOperator} ${right} = ${result}`;
+    const newLog = document.createElement("div");
+    newLog.classList.add("log");
+    newLog.textContent = output;
+    document.querySelector(".log-container").appendChild(newLog);
+}
+
+function allClear () {
+    left = "";
+    operator = "";
+    right = "";
+    clearLog();
+    enableDecimal();
+    setDisplay(left);
+}
+
+function backspace (string) {
+    if(string.charAt(string.length-1) === ".") enableDecimal();
+    return string.substring(0,string.length-1);
+}
+
+function clearLog () {
+    const logs = document.querySelectorAll(".log");
+    logs.forEach(element => element.remove());
 }

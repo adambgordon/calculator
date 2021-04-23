@@ -4,13 +4,35 @@ html {
     font-family: 'Roboto', sans-serif;
 }
 
-.button-grid {
+.main-content {
     display: grid;
-    min-width: 10rem;
-    max-width: 20rem;
-    min-height: 30rem;
-    max-height: 80rem;
+    grid-template-areas: ". middle right";
+    margin-top: 5rem;
+}
+
+.calculator-wrapper {
+    border: 1px solid black;
+    grid-area: "middle";
+    justify-content: center;
+}
+
+.calculator {
+    display: flex;
+    flex-direction: column;
+}
+
+.display {
+    margin: 1rem;
+    text-align: right;
+}
+
+.button-grid {
+    border: 1px solid black;
+    margin: 1rem;
+    display: grid;
     background-color: grey;
+    grid-template-columns: repeat(4,1fr);
+    grid-template-rows: repeat(5,1fr);
     grid-template-areas:
         "all-clear clear backspace divide"
         "seven eight nine multiply"
@@ -18,9 +40,16 @@ html {
         "one two three plus"
         "zero decimal equals equals";
     grid-gap: 1px;
-    
+    width: fit-content;
 }
 
 .button {
     background-color: white;
+    width: 4rem;
+    height: 4rem;
+}
+
+.log-container {
+    border: 1px solid black;
+    grid-area: "right";
 }
