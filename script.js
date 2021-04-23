@@ -85,62 +85,43 @@ function executeKey(key) {
             executeNumber(key);
             break;
         case "operator":
-            executeOperator();
-            operator = key;
+            executeOperator(key);
             break;
         case "command":
-            if (key == "a") {
-                allClear();
-            } else {
-                if (operator === "") {
-                    if (key === "c") {
-                        left = "";
-                        enableDecimal();
-                    } else if (key === "bs") {
-                        left = backspace(left);
-                    }
-                    setDisplay(left);
-                } else {
-                    if (key === "c") {
-                        right = "";
-                        enableDecimal();
-                    } else if (key === "bs") {
-                        right = backspace(right);
-                    }
-                    setDisplay(right);
-                }
-            }
+            executeCommand(key);
             break;
     }
 }
 
 
-function executeOperator () {
-    if (left === "" || right === "" || operator === "") return;
+function executeOperator (key) {
+    const completeExpression = !(left === "" || right === "" || operator === "");        
+    if (completeExpression) {
+        left = Number(left);
+        right = Number(right);
 
-    left = Number(left);
-    right = Number(right);
-
-    let result;
-    switch (operator) {
-        case "+":
-            result = add(left,right);
-            break;
-        case "-":
-            result = subtract(left,right);
-            break;
-        case "*":
-            result = multiply(left,right);
-            break;
-        case "/":
-            result = divide(left,right);
-            break;
+        let result;
+        switch (operator) {
+            case "+":
+                result = add(left,right);
+                break;
+            case "-":
+                result = subtract(left,right);
+                break;
+            case "*":
+                result = multiply(left,right);
+                break;
+            case "/":
+                result = divide(left,right);
+                break;
+        }
+        logResult(left,operator,right,result);
+        left = result.toString();
+        right = "";
+        setDisplay(left);
+        enableDecimal();
     }
-    logResult(left,operator,right,result);
-    left = result.toString();
-    right = "";
-    setDisplay(left);
-    enableDecimal();
+    operator = key;
 }
 
 function executeNumber (key) {
@@ -160,6 +141,31 @@ function executeNumber (key) {
             right = right + key;
             setDisplay(right);
             break;
+    }
+}
+
+
+function executeCommand (key) {
+    if (key == "a") {
+        allClear();
+    } else {
+        if (operator === "") {
+            if (key === "c") {
+                left = "";
+                enableDecimal();
+            } else if (key === "bs") {
+                left = backspace(left);
+            }
+            setDisplay(left);
+        } else {
+            if (key === "c") {
+                right = "";
+                enableDecimal();
+            } else if (key === "bs") {
+                right = backspace(right);
+            }
+            setDisplay(right);
+        }
     }
 }
 
@@ -211,14 +217,6 @@ function divide (a,b) {
     return a / b;
 }
 
-function logResult (left, operator, right, result) {
-    let newOperator = operator === "/" ? "÷" : operator;
-    let output = `${left} ${newOperator} ${right} = ${result}`;
-    const newLog = document.createElement("div");
-    newLog.classList.add("log");
-    newLog.textContent = output;
-    document.querySelector(".log-container").appendChild(newLog);
-}
 
 function allClear () {
     left = "";
@@ -232,6 +230,15 @@ function allClear () {
 function backspace (string) {
     if(string.charAt(string.length-1) === ".") enableDecimal();
     return string.substring(0,string.length-1);
+}
+
+function logResult (left, operator, right, result) {
+    let newOperator = operator === "/" ? "÷" : operator;
+    let output = `${left} ${newOperator} ${right} = ${result}`;
+    const newLog = document.createElement("div");
+    newLog.classList.add("log");
+    newLog.textContent = output;
+    document.querySelector(".log-container").appendChild(newLog);
 }
 
 function clearLog () {
