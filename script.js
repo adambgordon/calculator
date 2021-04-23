@@ -1,6 +1,6 @@
 /* MAIN CODE */
-let prev = "";
-let current = "";
+let left = "";
+let right = "";
 let operator = "";
 const keys = initKeys();
 initCalculator();
@@ -80,16 +80,25 @@ function receiveMouseInput(event) {
 
 function executeKey(index) {
     if (index === -1) return;
-    // console.log(keys[index]);
-
     const key = keys[index].key;
     const type = keys[index].type;
+
     switch (type) {
         case "number":
-            if (operator === "") {
-                prev = prev + key;
-            } else {
-                current = current + key;
+            switch (operator) {
+                case "": 
+                    left = left + key;
+                    setDisplay(left);
+                    break;
+                case "=":
+                    operator = "";
+                    left = key;
+                    setDisplay(left);
+                    break;
+                default:
+                    right = right + key;
+                    setDisplay(right);
+                    break;
             }
             break;
         case "operator":
@@ -97,11 +106,31 @@ function executeKey(index) {
             operator = key;
             break;
         case "command":
+            if (key == "ac") {
+                left = "";
+                operator = "";
+                right = "";
+                setDisplay(left);
+            } else {
+                if (operator === "") {
+                    if (key === "c") {
+                        left = "";
+                    } else if (key === "bs") {
+                        left = left.substring(0,left.length-1);
+                    }
+                    setDisplay(left);
+                } else {
+                    if (key === "c") {
+                        right = "";
+                    } else if (key === "bs") {
+                        right = right.substring(0,right.length-1);
+                    }
+                    setDisplay(right);
+                }
+            }
             break;
     }
-    // console.log({prev});
-    // console.log({current});
-    // console.log({operator});
+    console.log(left,operator,right);
 }
 
 function keyIndexById (id) {
@@ -112,26 +141,34 @@ function keyIndexByKey (key) {
     return keys.findIndex(element => {return element.key === key});
 }
 
+function setDisplay (string) {
+    document.querySelector(".display").textContent = string;
+}
+
 function operate () {
-    if (prev === "" || current === "" || operator === "") return;
-    console.log(prev,operator,current);
+    if (left === "" || right === "" || operator === "") return;
+    left = Number(left);
+    right = Number(right);
 
     let result;
     switch (operator) {
         case "+":
-            result = add(prev,current);
+            result = add(left,right);
             break;
         case "-":
-            result = subtract(prev,current);
+            result = subtract(left,right);
             break;
         case "*":
-            result = multiply(prev,current);
+            result = multiply(left,right);
             break;
         case "/":
-            result = divide(prev,current);
+            result = divide(left,right);
             break;
     }
-    console.log(result);
+    console.log(left,operator,right,result);
+    left = result.toString();
+    right = "";
+    setDisplay(left);
 }
 
 function add (a,b) {
