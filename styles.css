@@ -19,11 +19,14 @@ html {
 .calculator {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 .display {
     margin: 1rem;
+    width: 16rem;
     text-align: right;
+    border: 1px solid black;
 }
 
 .button-grid {
@@ -31,8 +34,8 @@ html {
     margin: 1rem;
     display: grid;
     background-color: grey;
-    grid-template-columns: repeat(4,1fr);
-    grid-template-rows: repeat(5,1fr);
+    grid-template-columns: repeat(4,4rem);
+    grid-template-rows: repeat(5,4rem);
     grid-template-areas:
         "all-clear clear backspace divide"
         "seven eight nine multiply"
@@ -44,12 +47,27 @@ html {
 }
 
 .button {
+    display:flex;
     background-color: white;
-    width: 4rem;
-    height: 4rem;
+    justify-content: center;
+    align-items: center;
+    transition-property: background-color;
+    transition-duration: 250ms;
 }
 
 .log-container {
     border: 1px solid black;
     grid-area: "right";
+}
+
+.active.number {
+    background-color: lightgoldenrodyellow;
+}
+
+.active.operator {
+    background-color: lightsalmon;
+}
+
+.active.command {
+    background-color: lightskyblue;
 }

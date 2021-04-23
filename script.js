@@ -27,9 +27,9 @@ function initKeys() {
         {id:	"decimal",	    key:	".",    type: "number"},
                     
         {id:	"equals",	    key:	"=",   type: "operator"}, // Event.key === (Enter)
-        {id:	"plus",	        key:	"+",    type: "operator"}, // Event.key === (+ || =)
+        {id:	"plus",	        key:	"+",    type: "operator"},
         {id:	"minus",	    key:	"-",    type: "operator"},
-        {id:	"multiply",	    key:	"*",    type: "operator"},
+        {id:	"multiply",	    key:	"*",    type: "operator"}, // Event.key === (* || x)
         {id:	"divide",	    key:	"/",    type: "operator"}
     ]
 }
@@ -37,6 +37,7 @@ function initKeys() {
 function initCalculator() {
     initButtonGrid();
     window.addEventListener('keydown',receiveKeyboardInput);
+    window.addEventListener("keyup",keyUp)
 
 }
 function initButtonGrid() {
@@ -47,6 +48,11 @@ function initButtonGrid() {
         button.classList.add(keys[keyIndexById(button.id)].type); // Add respective type class
         button.addEventListener("click",receiveMouseInput); // Add event listener
     });
+}
+
+function keyUp (event) {
+    const active = document.querySelector(".active");
+    if(active) active.classList.remove("active");
 }
 
 function receiveKeyboardInput(event) {
@@ -64,11 +70,15 @@ function receiveKeyboardInput(event) {
         case "Enter":
             key = "=";
             break;
-        case "=":
-            key = "+";
+        case "x":
+            key = "*";
             break;
     }
-    if (keyIsValid(key)) executeKey(key);
+    if (keyIsValid(key)) {
+        const id = "#"+keyId(key);
+        document.querySelector(id).classList.add("active");
+        executeKey(key);
+    }
 }
 
 function receiveMouseInput(event) {
@@ -180,7 +190,7 @@ function disableDecimal() {
 }
 
 function keyIsDisabled(key) {
-    const id = "#"+keys[keyIndexByKey(key)].id;
+    const id = "#"+keyId(key);
     return document.querySelector(id).classList.contains(".disabled");
 }
 
@@ -195,6 +205,10 @@ function keyIndexById (id) {
 
 function keyIndexByKey (key) {
     return keys.findIndex(element => {return element.key === key});
+}
+
+function keyId (key) {
+    return keys[keyIndexByKey(key)].id;
 }
 
 function setDisplay (string) {
