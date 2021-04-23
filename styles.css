@@ -24,15 +24,3 @@ html {
 .button {
     background-color: white;
 }
-#all-clear {
-    grid-area: all-clear;
-}
-#clear {
-    grid-area: clear;
-}
-#backspace {
-    grid-area: backspace;
-}
-#divide {
-    grid-area: divide;
-}

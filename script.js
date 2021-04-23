@@ -40,11 +40,13 @@ function initCalculator() {
 
 }
 function initButtonGrid() {
+    let type;
     const buttons = document.querySelectorAll(".button-grid div");
     buttons.forEach( button => {
-        button.style.gridArea = button.id;
-        button.classList.add("button");
-        button.addEventListener("click",receiveMouseInput)
+        button.style.gridArea = button.id; // Set grid placement
+        button.classList.add("button"); // Add button class
+        button.classList.add(keys[keyIndexById(button.id)].type); // Add respective type class
+        button.addEventListener("click",receiveMouseInput); // Add event listener
     });
 }
 
@@ -67,12 +69,12 @@ function receiveKeyboardInput(event) {
             key = "+";
             break;
     }
-    const index = keys.findIndex(element => {return element.key === key});
+    const index = keyIndexByKey(key);
     executeKey(index);
 }
 
 function receiveMouseInput(event) {
-    const index = keys.findIndex(element => {return element.id === this.id});
+    const index = keyIndexById(this.id);
     executeKey(index);
 }
 
@@ -81,8 +83,15 @@ function executeKey(index) {
     console.log(keys[index]);
 }
 
-
 function getButtonsList () {
     return document.querySelectorAll(".button");
+}
+
+function keyIndexById (id) {
+    return keys.findIndex(element => {return element.id === id});
+}
+
+function keyIndexByKey (key) {
+    return keys.findIndex(element => {return element.key === key});
 }
 
