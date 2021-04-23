@@ -1,1 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 
+html {
+    font-family: 'Roboto', sans-serif;
+}
+
+.button-grid {
+    display: grid;
+    min-width: 10rem;
+    max-width: 20rem;
+    min-height: 30rem;
+    max-height: 80rem;
+    background-color: grey;
+    grid-template-areas:
+        "all-clear clear backspace divide"
+        "seven eight nine multiply"
+        "four five six minus"
+        "one two three plus"
+        "zero decimal equals equals";
+    grid-gap: 1px;
+    
+}
+
+.button {
+    background-color: white;
+}
+#all-clear {
+    grid-area: all-clear;
+}
+#clear {
+    grid-area: clear;
+}
+#backspace {
+    grid-area: backspace;
+}
+#divide {
+    grid-area: divide;
+}
