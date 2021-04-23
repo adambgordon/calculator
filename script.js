@@ -1,9 +1,39 @@
 /* MAIN CODE */
+let prev;
+let current;
+let operand;
+const keyDictionary = initKeyDictionary();
 initCalculator();
 
 
 
 /* FUNCTIONS */
+function initKeyDictionary() {
+    return [
+        {id:	"all-clear",	key:	"a"}, // event.Key === (a || A)
+        {id:	"clear",	    key:	"c"}, // event.Key === (c || C)
+        {id:	"backspace",	key:	"bs"}, // event.key === (Backspace)
+                    
+        {id:	"zero",	        key:	"0"},
+        {id:	"one",	        key:	"1"},
+        {id:	"two",	        key:	"2"},
+        {id:	"three",    	key:	"3"},
+        {id:	"four",	        key:	"4"},
+        {id:	"five",	        key:	"5"},
+        {id:	"six",          key:	"6"},
+        {id:	"seven",        key:	"7"},
+        {id:	"eight",    	key:	"8"},
+        {id:	"nine",	        key:	"9"},
+        {id:	"decimal",	    key:	"."},
+                    
+        {id:	"equals",	    key:	"="}, // Event.key === (Enter)
+        {id:	"plus",	        key:	"+"}, // Event.key === (+ || =)
+        {id:	"minus",	    key:	"-"},
+        {id:	"multiply",	    key:	"*"},
+        {id:	"divide",	    key:	"/"},
+    ]
+}
+
 function initCalculator() {
     initButtonGrid();
     window.addEventListener('keydown',receiveKeyboardInput);
@@ -19,22 +49,36 @@ function initButtonGrid() {
 }
 
 function receiveKeyboardInput(event) {
-    let id;
-    if(event.shiftKey && event.code === "Digit8") {
-        id = "multiply";
-    } else {
-        element = document.querySelector(`div[data-eventCode="${event.code}"]`);
-        if (element) id = element.id;
+    let key = event.key;
+    switch (key) {
+        case "A":
+            key = "a";
+            break;
+        case "C":
+            key = "c";
+            break;
+        case "Backspace":
+            key = "bs";
+            break;
+        case "Enter":
+            key = "=";
+            break;
+        case "=":
+            key = "+";
+            break;
     }
-    if (id) receiveInput(id);
+    if (keyDictionary.some(element => element.key === key)) {
+        console.log(key);
+    }
 }
 
 function receiveMouseInput(event) {
-    receiveInput(this.id);
+    const index = keyDictionary.findIndex(element => {return element.id === this.id});
+    const key  = keyDictionary[index].key;
+    console.log(key);
 }
 
 function receiveInput(id) {
-    console.log(id);
 }
 
 function getButtonsList () {
