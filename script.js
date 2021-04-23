@@ -1,7 +1,7 @@
 /* MAIN CODE */
-let prev;
-let current;
-let operand;
+let prev = "";
+let current = "";
+let operator = "";
 const keys = initKeys();
 initCalculator();
 
@@ -80,11 +80,28 @@ function receiveMouseInput(event) {
 
 function executeKey(index) {
     if (index === -1) return;
-    console.log(keys[index]);
-}
+    // console.log(keys[index]);
 
-function getButtonsList () {
-    return document.querySelectorAll(".button");
+    const key = keys[index].key;
+    const type = keys[index].type;
+    switch (type) {
+        case "number":
+            if (operator === "") {
+                prev = prev + key;
+            } else {
+                current = current + key;
+            }
+            break;
+        case "operator":
+            operate();
+            operator = key;
+            break;
+        case "command":
+            break;
+    }
+    // console.log({prev});
+    // console.log({current});
+    // console.log({operator});
 }
 
 function keyIndexById (id) {
@@ -95,3 +112,40 @@ function keyIndexByKey (key) {
     return keys.findIndex(element => {return element.key === key});
 }
 
+function operate () {
+    if (prev === "" || current === "" || operator === "") return;
+    console.log(prev,operator,current);
+
+    let result;
+    switch (operator) {
+        case "+":
+            result = add(prev,current);
+            break;
+        case "-":
+            result = subtract(prev,current);
+            break;
+        case "*":
+            result = multiply(prev,current);
+            break;
+        case "/":
+            result = divide(prev,current);
+            break;
+    }
+    console.log(result);
+}
+
+function add (a,b) {
+    return a + b;
+}
+
+function subtract (a,b) {
+    return a - b;
+}
+
+function multiply (a,b) {
+    return a * b;
+}
+
+function divide (a,b) {
+    return a / b;
+}
