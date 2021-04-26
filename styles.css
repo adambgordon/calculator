@@ -37,6 +37,7 @@ html {
 
 .display {
     margin: 0.5rem;
+    overflow: hidden;
 }
 
 .button-grid {
@@ -50,36 +51,47 @@ html {
         "seven eight nine multiply"
         "four five six minus"
         "one two three plus"
-        "zero decimal equals equals";
+        "decimal zero equals equals";
     grid-gap: 0.25rem;
     width: fit-content;
 }
 
 .button {
     display:flex;
-    background-color: white;
     justify-content: center;
     align-items: center;
-    transition-property: background-color;
-    transition-duration: 250ms;
-    border: 1px solid lightgray;
     border-radius: 3px;
+    transition: all 1s ease;
+
 }
 
-.log-container {
+.log-wrapper {
     border: 1px solid lightgray;
     border-radius: 0.5rem;
     padding: 1rem;
 }
 
-.active.number {
-    background-color: rgb(254, 231, 126);
+.log {
+    margin: 1rem 0;
+    border: 1px solid lightgray;
+    border-radius: 0.5rem;
+
 }
 
-.active.operator {
-    background-color: lightsalmon;
+.number {
+    background: rgb(254, 231, 126);
 }
 
-.active.command {
-    background-color: lightskyblue;
+.operator {
+    background: lightsalmon;
+}
+
+.command {
+    background: lightskyblue;
+}
+
+
+.active {
+    background-image: linear-gradient(rgba(0,0,0,75%),rgba(0,0,0,75%));
+    background-blend-mode: overlay;
 }
