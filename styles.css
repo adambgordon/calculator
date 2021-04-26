@@ -6,10 +6,6 @@ html {
     font-family: 'Roboto', sans-serif;
 }
 
-.material-icons {
-    /* color:white; */
-}
-
 .main-content {
     display: grid;
     grid-template-columns: repeat(3,1fr);
@@ -33,18 +29,22 @@ html {
 
 .display-wrapper {
     margin: 1rem;
-    width: 16.75rem;
+    width: 17.5rem;
     height: 3rem;
-    border: 1px solid lightgray;
+    /* border: 1px solid rgb(221, 221, 221); */
     border-radius: 3px;
     display: flex;
     flex-direction: row-reverse;
     align-items: center;
+    box-shadow: 0 0 1px 1px rgb(221, 221, 221);
 }
 
 .display {
     margin: 0.5rem;
     overflow: hidden;
+    color:rgb(80, 80, 80);
+    font-weight: 700;
+    font-size: 1.75rem;
 }
 
 .button-grid {
@@ -59,9 +59,9 @@ html {
         "four five six minus"
         "one two three plus"
         "decimal zero equals equals";
-    grid-gap: 0.4rem;
+    grid-gap: 0.5rem;
     width: fit-content;
-    border-radius: 0.4rem;
+    border-radius: 0.5rem;
     color:white;
 }
 
@@ -71,24 +71,28 @@ html {
     align-items: center;
     border-radius: 3px;
     transition: all 1s ease;
-    box-shadow: 0 2px 1px 0px rgb(221, 221, 221);
+    box-shadow: 0 2px 2px 0px rgb(221, 221, 221);
+    font-weight: 500;
+    font-size: 1.2rem;
 }
 
 .log-wrapper {
     border: 1px solid lightgray;
     border-radius: 0.5rem;
     padding: 1rem;
+    color:rgb(80, 80, 80);
+    font-weight: 300;
 }
 
 .log {
     margin: 1rem 0;
     border: 1px solid lightgray;
     border-radius: 0.5rem;
-
 }
 
 .number {
-    background: rgb(254, 231, 126);
+    background: rgb(255, 231, 126);
+    color:rgb(80, 80, 80);
 }
 
 .operator {
