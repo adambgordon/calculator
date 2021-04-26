@@ -27,7 +27,7 @@ function initKeys() {
         {id:	"decimal",	    key:	".",    type: "number"},
                     
         {id:	"equals",	    key:	"=",   type: "operator"}, // Event.key === (Enter)
-        {id:	"plus",	        key:	"+",    type: "operator"},
+        {id:	"plus",	        key:	"+",    type: "operator"}, // Event.key === (+ || =)
         {id:	"minus",	    key:	"-",    type: "operator"},
         {id:	"multiply",	    key:	"*",    type: "operator"}, // Event.key === (* || x)
         {id:	"divide",	    key:	"/",    type: "operator"}
@@ -36,8 +36,8 @@ function initKeys() {
 
 function initCalculator() {
     initButtonGrid();
-    window.addEventListener('keydown',receiveKeyboardInput);
-    window.addEventListener("keyup",keyUp)
+    window.addEventListener("keydown",keyDown);
+    window.addEventListener("keyup",receiveKeyboardInput)
 
 }
 function initButtonGrid() {
@@ -46,45 +46,39 @@ function initButtonGrid() {
         button.style.gridArea = button.id; // Set grid placement
         button.classList.add("button"); // Add button class
         button.classList.add(keys[keyIndexById(button.id)].type); // Add respective type class
-        button.addEventListener("click",receiveMouseInput); // Add event listener
+        button.addEventListener("mousedown",mouseDown); // Add event listener
+        button.addEventListener("mouseup",receiveMouseInput); // Add event listener
     });
 }
 
-function keyUp (event) {
-    const active = document.querySelector(".active");
-    if(active) active.classList.remove("active");
+
+
+function keyDown (event) {
+    let key = event.key;
+    key = standardizeKey(key);
+    if (keyIsValid(key)) addToActiveClass(key); 
+}
+
+function mouseDown (event) {
+    const key = keys[keyIndexById(this.id)].key;
+    addToActiveClass(key);
 }
 
 function receiveKeyboardInput(event) {
     let key = event.key;
-    switch (key) {
-        case "A":
-            key = "a";
-            break;
-        case "C":
-            key = "c";
-            break;
-        case "Backspace":
-            key = "bs";
-            break;
-        case "Enter":
-            key = "=";
-            break;
-        case "x":
-            key = "*";
-            break;
-    }
+    key = standardizeKey(key);
     if (keyIsValid(key)) {
-        const id = "#"+keyId(key);
-        document.querySelector(id).classList.add("active");
+        removeActiveClass(key);
         executeKey(key);
     }
 }
 
 function receiveMouseInput(event) {
     const key = keys[keyIndexById(this.id)].key;
-    if (keyIsValid(key)) executeKey(key);
-}
+    if (keyIsValid(key)) {
+        removeActiveClass(key);
+        executeKey(key);
+    }}
 
 function executeKey(key) {
     if (keyIsDisabled(key)) return;
@@ -102,7 +96,6 @@ function executeKey(key) {
             break;
     }
 }
-
 
 function executeOperator (key) {
     const completeExpression = !(left === "" || right === "" || operator === "");        
@@ -154,7 +147,6 @@ function executeNumber (key) {
     }
 }
 
-
 function executeCommand (key) {
     if (key == "a") {
         allClear();
@@ -179,19 +171,66 @@ function executeCommand (key) {
     }
 }
 
+function standardizeKey (key) {
+    switch (key) {
+        case "A":
+            key = "a";
+            break;
+        case "C":
+            key = "c";
+            break;
+        case "Backspace":
+            key = "bs";
+            break;
+        case "Enter":
+            key = "=";
+            break;
+        case "=":
+            key = "+";
+            break;
+        case "x":
+            key = "*";
+            break;
+    }
+    return key;
+}
+
+function addToActiveClass (key) {
+    const id = "#"+keyId(key);
+    document.querySelector(id).classList.add("active");
+}
+
+function removeActiveClass(key) {
+    const index = keyIndexByKey(key);
+    const id = keys[index].id;
+    const type = keys[index].type;
+    const element = document.querySelector(`#${id}`);
+    const operators = document.querySelectorAll(".operator");
+
+    if ( (type === "number" || type === "command") || id === "equals" ) {
+        element.classList.remove("active");
+    }
+
+    if (type === "operator" || id === "all-clear") {
+        operators.forEach(operator => {
+            if (operator.id !== id && operator.classList.contains("active")) operator.classList.remove("active");
+        });
+    }
+}
+
 function enableDecimal() {
     const element = document.querySelector("#decimal");
-    element.classList.remove(".disabled");
+    element.classList.remove("disabled");
 }
 
 function disableDecimal() {
     const element = document.querySelector("#decimal");
-    element.classList.add(".disabled");
+    element.classList.add("disabled");
 }
 
 function keyIsDisabled(key) {
     const id = "#"+keyId(key);
-    return document.querySelector(id).classList.contains(".disabled");
+    return document.querySelector(id).classList.contains("disabled");
 }
 
 function keyIsValid(key) {
@@ -212,6 +251,7 @@ function keyId (key) {
 }
 
 function setDisplay (string) {
+    if (string === "") string = "0";
     document.querySelector(".display").textContent = string;
 }
 

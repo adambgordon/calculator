@@ -6,14 +6,16 @@ html {
 
 .main-content {
     display: grid;
-    grid-template-areas: ". middle right";
+    grid-template-columns: repeat(3,1fr);
     margin-top: 5rem;
 }
 
 .calculator-wrapper {
-    border: 1px solid black;
-    grid-area: "middle";
+    border: 1px solid lightgray;
+    border-radius: 0.5rem;
     justify-content: center;
+    width: fit-content;
+    padding: 0.5rem;
 }
 
 .calculator {
@@ -22,18 +24,25 @@ html {
     align-items: center;
 }
 
-.display {
+.display-wrapper {
     margin: 1rem;
-    width: 16rem;
-    text-align: right;
-    border: 1px solid black;
+    width: 16.75rem;
+    height: 3rem;
+    border: 1px solid lightgray;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+.display {
+    margin: 0.5rem;
 }
 
 .button-grid {
-    border: 1px solid black;
     margin: 1rem;
     display: grid;
-    background-color: grey;
+    /* background-color: grey; */
     grid-template-columns: repeat(4,4rem);
     grid-template-rows: repeat(5,4rem);
     grid-template-areas:
@@ -42,7 +51,7 @@ html {
         "four five six minus"
         "one two three plus"
         "zero decimal equals equals";
-    grid-gap: 1px;
+    grid-gap: 0.25rem;
     width: fit-content;
 }
 
@@ -53,15 +62,18 @@ html {
     align-items: center;
     transition-property: background-color;
     transition-duration: 250ms;
+    border: 1px solid lightgray;
+    border-radius: 3px;
 }
 
 .log-container {
-    border: 1px solid black;
-    grid-area: "right";
+    border: 1px solid lightgray;
+    border-radius: 0.5rem;
+    padding: 1rem;
 }
 
 .active.number {
-    background-color: lightgoldenrodyellow;
+    background-color: rgb(254, 231, 126);
 }
 
 .active.operator {
