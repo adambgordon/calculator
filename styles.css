@@ -1,7 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
 html {
     font-family: 'Roboto', sans-serif;
+}
+
+.material-icons {
+    /* color:white; */
 }
 
 .main-content {
@@ -11,11 +17,12 @@ html {
 }
 
 .calculator-wrapper {
-    border: 1px solid lightgray;
+    /* border: 5px solid rgb(231, 231, 231); */
     border-radius: 0.5rem;
     justify-content: center;
     width: fit-content;
     padding: 0.5rem;
+    box-shadow: 0 0 5px 2px rgb(221, 221, 221);
 }
 
 .calculator {
@@ -52,8 +59,10 @@ html {
         "four five six minus"
         "one two three plus"
         "decimal zero equals equals";
-    grid-gap: 0.25rem;
+    grid-gap: 0.4rem;
     width: fit-content;
+    border-radius: 0.4rem;
+    color:white;
 }
 
 .button {
@@ -62,7 +71,7 @@ html {
     align-items: center;
     border-radius: 3px;
     transition: all 1s ease;
-
+    box-shadow: 0 2px 1px 0px rgb(221, 221, 221);
 }
 
 .log-wrapper {
@@ -94,4 +103,5 @@ html {
 .active {
     background-image: linear-gradient(rgba(0,0,0,75%),rgba(0,0,0,75%));
     background-blend-mode: overlay;
+    box-shadow: none;
 }
