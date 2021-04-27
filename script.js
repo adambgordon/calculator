@@ -56,24 +56,20 @@ function keyDown (event) {
     let key = event.key;
     key = standardizeKey(key);
     if (keyIsValid(key)) {
-        // addToActiveClass(key); 
-        updateActiveClasses(key);
+        addActiveClasses(key);
     }
 }
 
 function mouseDown (event) {
     const key = keys[keyIndexById(this.id)].key;
-    // addToActiveClass(key);
-    updateActiveClasses(key);
-
+    addActiveClasses(key);
 }
 
 function keyUp(event) {
     let key = event.key;
     key = standardizeKey(key);
     if (keyIsValid(key)) {
-        // removeActiveClass(key);
-        updateActiveClasses(key);
+        removeActiveClasses(key);
         executeKey(key);
     }
 }
@@ -81,8 +77,7 @@ function keyUp(event) {
 function mouseUp(event) {
     const key = keys[keyIndexById(this.id)].key;
     if (keyIsValid(key)) {
-        // removeActiveClass(key);
-        updateActiveClasses(key);
+        removeActiveClasses(key);
         executeKey(key);
     }
 }
@@ -104,10 +99,13 @@ function executeKey(key) {
     }
 }
 
+function expressionIsComplete() {
+    return !(left === "" || right === "" || operator === ""); 
+}
+
 function executeOperator (key) {
     if (left !== "") enableDecimal();
-    const completeExpression = !(left === "" || right === "" || operator === "");        
-    if (completeExpression) {
+    if (expressionIsComplete()) {
         left = Number(left);
         right = Number(right);
 
@@ -126,6 +124,7 @@ function executeOperator (key) {
                 result = divide(left,right);
                 break;
         }
+        
         result = roundTo(result,10);
         logResult(left,operator,right,result);
         left = result.toString();
@@ -209,42 +208,51 @@ function standardizeKey (key) {
     return key;
 }
 
-
-function toggleActive (element) {
-    if (element.classList.contains("active")) {
-        element.classList.remove("active");
-    } else {
-        element.classList.add("active");
-    }
+function getElementById(id) {
+    return document.querySelector(`#${id}`);
 }
 
-function updateActiveClasses (key) {
+function isActive(element) {
+    return element.classList.contains("active");
+}
+
+function activate (element) {
+    element.classList.add("active");
+}
+
+function deactivate (element) {
+    element.classList.remove("active");
+}
+
+function deactivateOtherOperators (element) {
+    const operators = document.querySelectorAll(".operator");
+    operators.forEach(operator => {
+        if (isActive(operator) && operator !== element) {
+            deactivate(operator);
+        }
+    });
+}
+
+function addActiveClasses (key) {
     const index = keyIndexByKey(key);
     const id = keys[index].id;
     const type = keys[index].type;
-    const element = document.querySelector(`#${id}`);
-    const currentlyActive = document.querySelector(".active");
+    const element = getElementById(id);
 
-    switch (type) {
-        case "number":
-            toggleActive(element);
-            break;
-        case "operator":
-            if (left === "" || !currentlyActive) {
-                toggleActive(element);
-            } else {
-                if (currentlyActive !== element) {
-                    toggleActive(currentlyActive);
-                    toggleActive(element);
-                } else if (id === "equals") {
-                    toggleActive(element);
-                }
-            }
-            break;
-        case "command":
-            if (currentlyActive && id === "all-clear" && currentlyActive !== element) toggleActive(currentlyActive);
-            toggleActive(element);
-            break;
+    if (id === "all-clear" || type === "operator") {
+        deactivateOtherOperators(element);
+    }
+    activate(element);
+}
+
+function removeActiveClasses (key) {
+    const index = keyIndexByKey(key);
+    const id = keys[index].id;
+    const type = keys[index].type;
+    const element = getElementById(id);
+
+    if (type !== "operator" || (left === "" || id === "equals")) {
+        deactivate (element);
     }
 }
 
