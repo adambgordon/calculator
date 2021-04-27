@@ -289,8 +289,34 @@ function keyId (key) {
 }
 
 function setDisplay (string) {
-    if (string === "") string = "0";
+    if (string === "") {
+        string = "0";
+    } else {
+        string = addThousandsSeparators(string);
+    }
     document.querySelector(".display").textContent = string;
+}
+
+function addThousandsSeparators (string) {
+
+    const portions = string.split(".");
+    const integerSide = portions[0];
+
+    const numberOfCommas = Math.floor((integerSide.length-1)/3);
+    let numberOfLeadingDigits = integerSide.length % 3;
+    if (numberOfLeadingDigits === 0) numberOfLeadingDigits = 3;
+
+    let buildString = integerSide.substring(0,numberOfLeadingDigits);
+    let restOfString = integerSide.substring(numberOfLeadingDigits);
+    
+    
+    for (let i = 0; i < numberOfCommas; i++) {
+        buildString = buildString + "," + restOfString.substring(0,3);
+        restOfString = restOfString.substring(3);
+    }
+
+    if (portions[1]) buildString = buildString + "." + portions[1];
+    return buildString;
 }
 
 function add (a,b) {
@@ -326,11 +352,18 @@ function backspace (string) {
 
 function logResult (left, operator, right, result) {
     let newOperator = operator === "/" ? "÷" : operator;
-    let output = `${left} ${newOperator} ${right} = ${result}`;
-    const newLog = document.createElement("div");
-    newLog.classList.add("log-item");
-    newLog.textContent = output;
-    document.querySelector(".log").appendChild(newLog);
+    let newLeft = addThousandsSeparators(left.toString());
+    let newRight = addThousandsSeparators(right.toString());
+    let newResult = addThousandsSeparators(result.toString());
+
+    let output = `${newLeft} ${newOperator} ${newRight} = ${newResult}`;
+
+    const newLogItem = document.createElement("div");
+    newLogItem.classList.add("log-item");
+    newLogItem.textContent = output;
+    
+    const log = document.querySelector(".log");
+    log.insertBefore(newLogItem,log.firstElementChild);
 }
 
 function clearLog () {
