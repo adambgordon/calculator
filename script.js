@@ -4,6 +4,7 @@ let right = "";
 let operator = "";
 const keys = initKeys();
 initCalculator();
+initLog();
 
 
 
@@ -51,6 +52,23 @@ function initButtonGrid() {
     });
 }
 
+function initLog() {
+    const slider = document.querySelector(".slider");
+    slider.addEventListener("click",toggleLog);
+}
+
+function toggleLog (event) {
+    const logWrapper = document.querySelector(".log-wrapper");
+    const log = document.querySelector(".log");
+    const sliderInput = document.querySelector(".slider-container input:checked");
+    if (sliderInput === null) {
+        logWrapper.classList.add("log-wrapper-unhidden");
+        log.classList.add("log-unhidden");
+    } else {
+        logWrapper.classList.remove("log-wrapper-unhidden");
+        log.classList.remove("log-unhidden");
+    }
+}
 
 function keyDown (event) {
     let key = event.key;
@@ -351,10 +369,26 @@ function backspace (string) {
 }
 
 function logResult (left, operator, right, result) {
-    let newOperator = operator === "/" ? "÷" : operator;
     let newLeft = addThousandsSeparators(left.toString());
     let newRight = addThousandsSeparators(right.toString());
     let newResult = addThousandsSeparators(result.toString());
+
+
+    let newOperator;
+    switch (operator) {
+        case "/":
+            newOperator = "÷";
+            break;
+        case "-":
+            newOperator = "–";
+            break;
+        case "*":
+            newOperator = "x";
+            break;
+        default:
+            newOperator = operator;
+            break;
+    }
 
     let output = `${newLeft} ${newOperator} ${newRight} = ${newResult}`;
 

@@ -2,6 +2,13 @@
 
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
+@media screen and (max-width: 800px) {
+    .log-wrapper {
+        display: none;
+    }
+    
+}
+
 html {
     font-family: 'Roboto', sans-serif;
 }
@@ -9,17 +16,17 @@ html {
 .main-content {
     display: grid;
     grid-template-columns: repeat(3,1fr);
-    margin-top: 5rem;
+    margin-top: 3rem;
     color:rgb(80, 80, 80);
 }
 
 .name-plate {
     margin: 0.75rem;
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: 900;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     color: white;
-    -webkit-text-stroke: .9px black;
+    -webkit-text-stroke: 1px rgb(80, 80, 80);
 }
 
 .display-wrapper {
@@ -48,6 +55,7 @@ html {
     height: fit-content;
     padding: 0.5rem;
     box-shadow: 0 0 5px 2px rgb(221, 221, 221);
+    margin: 0 6rem;
 }
 
 .calculator {
@@ -61,7 +69,6 @@ html {
 .button-grid {
     margin: 1rem;
     display: grid;
-    /* background-color: grey; */
     grid-template-columns: repeat(4,4rem);
     grid-template-rows: repeat(5,4rem);
     grid-template-areas:
@@ -88,25 +95,55 @@ html {
 }
 
 .log-wrapper {
-    border: 1px solid lightgray;
-    border-radius: 0.5rem;
     padding: 1rem;
     color:rgb(80, 80, 80);
     font-weight: 300;
+    max-height: 1.2rem;
+    max-width: 9rem;
+    border: 1px solid rgb(221, 221, 221);
+    border-radius: 0.5rem;
+    transition: all 150ms ease-in-out;
+}
+
+.log-wrapper-unhidden {
+    max-height: 30.5rem;
+    max-width: 18rem;
+    min-width: 12rem;
+    transition: all 300ms ease-in-out;
+}
+
+
+.log-header {
+    display: flex;
+    align-items: center;
+    font-size: .9rem;
+}
+
+.log-header p {
+    margin: 0 1rem;
 }
 
 .log {
-    margin: 1rem 0;
+    visibility: hidden;
+    opacity: 0%;
+    margin: 1rem 0 0;
     font-size: 0.9rem;
     letter-spacing: 0.5px;
-    width: 22rem;
-    height: 28rem;
+    max-height: 28rem;
     overflow: scroll;
-    border: 1px solid black;
+    transition: all 150ms ease-in-out;
 }
 
+.log-unhidden {
+    visibility: visible;
+    opacity: 100%;
+    transition: all 500ms ease-in-out;
+}
+
+
+
 .log-item {
-    margin: 0.75rem 0;
+    margin: 1.25rem 0 0;
 }
 
 .number {
@@ -127,4 +164,57 @@ html {
     background-image: linear-gradient(rgba(0,0,0,75%),rgba(0,0,0,75%));
     background-blend-mode: overlay;
     box-shadow: none;
+}
+
+
+/* The switch - the box around the slider */
+.slider-container {
+    position: relative;
+    display: inline-block;
+    width: 36px;
+    height: 16px;
+}
+
+/* Hide default HTML checkbox */
+.slider-container input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+  /* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: all 150ms;
+    border-radius: 10px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: -2px;
+    top: -2px;
+    background-color: white;
+    transition: all 150ms;
+    border-radius: 50%;
+    box-shadow: -2px 1px 5px 0 rgb(221, 221, 221);
+}
+  
+input:checked + .slider {
+    background-color: #2196F3;
+}
+  
+  
+input:checked + .slider:before {
+    transform: translateX(20px);
+    box-shadow: 2px 1px 5px 0 rgb(221, 221, 221);
+
 }
