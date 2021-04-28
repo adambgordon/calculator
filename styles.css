@@ -118,7 +118,6 @@ html {
 .log-wrapper-unhidden {
     max-height: 30.5rem;
     max-width: 18rem;
-    min-width: 12rem;
     transition: all 300ms ease-in-out;
 }
 
