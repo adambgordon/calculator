@@ -390,7 +390,7 @@ function containsDecimalPlaces (string) {
 // Adds thousands separators in appopriate positions, controlling for
 // negatives, decimals, infinity, etc.
 function addThousandsSeparators (string) {
-    if (string === "Infinity") return string;
+    if (string === "Infinity" || string === "-Infinity") return string;
 
     let portions;
     let negative = "";
