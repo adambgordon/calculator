@@ -21,6 +21,7 @@
 
 html {
     font-family: 'Roboto', sans-serif;
+    background-color: rgb(245,245,245);
 }
 
 .main-content {
@@ -38,6 +39,7 @@ html {
     padding: 0.5rem;
     box-shadow: 0 0 5px 2px rgb(221, 221, 221);
     margin: 0 6rem;
+    background-color: white;
 }
 
 .calculator {
@@ -110,6 +112,7 @@ html {
     border: 1px solid rgb(221, 221, 221);
     border-radius: 0.5rem;
     transition: all 150ms ease-in-out; /* Faster transition when hiding */
+    background-color: white;
 }
 
 .log-wrapper-unhidden {
@@ -132,7 +135,7 @@ html {
 .log {
     visibility: hidden;
     opacity: 0%;
-    margin: 1rem 0 0;
+    margin: 0.5rem 0 0;
     font-size: 0.9rem;
     letter-spacing: 0.5px;
     max-height: 29rem;
