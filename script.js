@@ -169,7 +169,7 @@ function executeOperator (key) {
                 break;
         }
         
-        result = roundTo(result,10); // Round to 10 places
+        result = roundTo(result,8); // Round to 8 places
         logResult(left,operator,right,result); // Add to log
         left = result.toString(); // New left now = result
         right = ""; // New right is now empty
