@@ -1,6 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
+
+/* For mobile and small windows */
 @media  screen and (max-device-width: 800px) {
     .log-wrapper {
         display: none;
@@ -28,14 +30,28 @@ html {
     color:rgb(80, 80, 80);
 }
 
+.calculator-wrapper {
+    border-radius: 0.5rem;
+    justify-content: center;
+    width: fit-content;
+    height: fit-content;
+    padding: 0.5rem;
+    box-shadow: 0 0 5px 2px rgb(221, 221, 221);
+    margin: 0 6rem;
+}
+
+.calculator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .name-plate {
     margin: 0.75rem;
     text-align: center;
     font-size: 1.5rem;
     font-weight: 800;
     letter-spacing: 1px;
-    /* color: white;
-    -webkit-text-stroke: 1px rgb(80, 80, 80); */
     color: rgb(120,120,120);
 }
 
@@ -57,24 +73,6 @@ html {
     font-weight: 700;
     font-size: 1.75rem;
 }
-
-.calculator-wrapper {
-    border-radius: 0.5rem;
-    justify-content: center;
-    width: fit-content;
-    height: fit-content;
-    padding: 0.5rem;
-    box-shadow: 0 0 5px 2px rgb(221, 221, 221);
-    margin: 0 6rem;
-}
-
-.calculator {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-
 
 .button-grid {
     margin: 1rem;
@@ -112,13 +110,13 @@ html {
     max-width: 9rem;
     border: 1px solid rgb(221, 221, 221);
     border-radius: 0.5rem;
-    transition: all 150ms ease-in-out;
+    transition: all 150ms ease-in-out; /* Faster transition when hiding */
 }
 
 .log-wrapper-unhidden {
     max-height: 32.5rem;
     max-width: 18rem;
-    transition: all 300ms ease-in-out;
+    transition: all 300ms ease-in-out; /* Slower transition when unhiding */
 }
 
 
@@ -140,16 +138,14 @@ html {
     letter-spacing: 0.5px;
     max-height: 29rem;
     overflow: scroll;
-    transition: all 50ms ease-in-out;
+    transition: all 50ms ease-in-out; /* Slower transition when unhiding */
 }
 
 .log-unhidden {
     visibility: visible;
     opacity: 100%;
-    transition: all 150ms ease-in-out 250ms;
+    transition: all 150ms ease-in-out 250ms; /* Slower transition when unhiding */
 }
-
-
 
 .log-item {
     margin: 1.25rem 0 0;
@@ -168,7 +164,8 @@ html {
     background: lightskyblue;
 }
 
-
+/* When button is "depressed", overlay with a partial opacity black and remove shadow */
+/* Note: blending only works if one of the backgrounds is considered an image */
 .active {
     background-image: linear-gradient(rgba(0,0,0,75%),rgba(0,0,0,75%));
     background-blend-mode: overlay;
@@ -191,7 +188,7 @@ html {
     height: 0;
 }
 
-  /* The slider */
+/* The slider */
 .slider {
     position: absolute;
     cursor: pointer;
@@ -204,6 +201,7 @@ html {
     border-radius: 10px;
 }
 
+/* The slider knob */
 .slider:before {
     position: absolute;
     content: "";
@@ -216,12 +214,12 @@ html {
     border-radius: 50%;
     box-shadow: -2px 1px 5px 0 rgb(221, 221, 221);
 }
-  
+
 input:checked + .slider {
     background-color: #2196F3;
 }
   
-  
+/* Knob movement */
 input:checked + .slider:before {
     transform: translateX(20px);
     box-shadow: 2px 1px 5px 0 rgb(221, 221, 221);
