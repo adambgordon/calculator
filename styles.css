@@ -11,6 +11,10 @@
         display: flex;
         justify-content: center;
     }
+
+    .calculator-wrapper {
+        margin: 0;
+    }
 }
 
 
