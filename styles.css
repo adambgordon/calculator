@@ -2,12 +2,17 @@
 
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
-@media screen and (max-width: 800px) {
+@media  screen and (max-device-width: 800px) {
     .log-wrapper {
         display: none;
     }
     
+    .main-content {
+        display: flex;
+        justify-content: center;
+    }
 }
+
 
 html {
     font-family: 'Roboto', sans-serif;
