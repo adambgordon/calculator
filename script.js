@@ -149,7 +149,12 @@ function executeOperator (key) {
         right = "";
         setDisplay(left);
     }
-    if (left !== "") operator = key;
+    if (left === "" && key === "-") {
+        left += key;
+        setDisplay(left);
+    } else if (left !== "") {
+        operator = key;
+    }
 }
 
 function roundTo(value, places) {
@@ -162,17 +167,21 @@ function executeNumber (key) {
         disableDecimal();
     }
     switch (operator) {
-        case "": 
-            left = left + key;
+        case "":
+            if ((left === "" || left == "-") && key === ".") left += "0";
+            left += key;
             setDisplay(left);
             break;
         case "=":
             operator = "";
-            left = key;
+            left = "";
+            if ((left === "" || left == "-") && key === ".") left += "0";
+            left += key;
             setDisplay(left);
             break;
         default:
-            right = right + key;
+            if (right === "" & key === ".") right = "0";
+            right += key;
             setDisplay(right);
             break;
     }
@@ -315,25 +324,48 @@ function setDisplay (string) {
     document.querySelector(".display").textContent = string;
 }
 
+function containsDecimal (string) {
+    return string.includes(".");
+}
+
+function containsDecimalPlaces (string) {
+    return (containsDecimal(string) && string.indexOf(".") < string.length - 1);
+}
+
 function addThousandsSeparators (string) {
+    let portions;
+    let negative = "";
+    let integerSide = "";
+    let decimal = "";
+    let decimalSide = "";
+    if (containsDecimal(string)) {
+        portions = string.split(".");
+        integerSide = portions[0];
+        decimal = ".";
+        if (containsDecimalPlaces(string)) decimalSide = portions[1];
+    } else {
+        integerSide = string;
+    }
+    if (integerSide.charAt(0) === "-") {
+        negative = "-";
+        integerSide = integerSide.substring(1);
+    }
+    let newString = negative + addCommasOnly(integerSide) + decimal + decimalSide;
+    return newString;
+}
 
-    const portions = string.split(".");
-    const integerSide = portions[0];
-
-    const numberOfCommas = Math.floor((integerSide.length-1)/3);
-    let numberOfLeadingDigits = integerSide.length % 3;
+function addCommasOnly (integerString) {
+    const numberOfCommas = Math.floor((integerString.length-1)/3);
+    let numberOfLeadingDigits = integerString.length % 3;
     if (numberOfLeadingDigits === 0) numberOfLeadingDigits = 3;
 
-    let buildString = integerSide.substring(0,numberOfLeadingDigits);
-    let restOfString = integerSide.substring(numberOfLeadingDigits);
-    
+    let buildString = integerString.substring(0,numberOfLeadingDigits);
+    let restOfString = integerString.substring(numberOfLeadingDigits);
     
     for (let i = 0; i < numberOfCommas; i++) {
         buildString = buildString + "," + restOfString.substring(0,3);
         restOfString = restOfString.substring(3);
     }
-
-    if (portions[1]) buildString = buildString + "." + portions[1];
     return buildString;
 }
 
@@ -353,12 +385,11 @@ function divide (a,b) {
     return a / b;
 }
 
-
 function allClear () {
     left = "";
     operator = "";
     right = "";
-    clearLog();
+    // clearLog();
     enableDecimal();
     setDisplay(left);
 }

@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
-
 @import url("https://fonts.googleapis.com/icon?family=Material+Icons");
 
 @media  screen and (max-device-width: 800px) {
@@ -18,7 +17,6 @@
     }
 }
 
-
 html {
     font-family: 'Roboto', sans-serif;
 }
@@ -32,11 +30,13 @@ html {
 
 .name-plate {
     margin: 0.75rem;
-    font-size: 1.75rem;
-    font-weight: 900;
-    letter-spacing: 2px;
-    color: white;
-    -webkit-text-stroke: 1px rgb(80, 80, 80);
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    /* color: white;
+    -webkit-text-stroke: 1px rgb(80, 80, 80); */
+    color: rgb(120,120,120);
 }
 
 .display-wrapper {
@@ -116,7 +116,7 @@ html {
 }
 
 .log-wrapper-unhidden {
-    max-height: 30.5rem;
+    max-height: 32.5rem;
     max-width: 18rem;
     transition: all 300ms ease-in-out;
 }
@@ -138,15 +138,15 @@ html {
     margin: 1rem 0 0;
     font-size: 0.9rem;
     letter-spacing: 0.5px;
-    max-height: 28rem;
+    max-height: 29rem;
     overflow: scroll;
-    transition: all 150ms ease-in-out;
+    transition: all 50ms ease-in-out;
 }
 
 .log-unhidden {
     visibility: visible;
     opacity: 100%;
-    transition: all 500ms ease-in-out;
+    transition: all 150ms ease-in-out 250ms;
 }
 
 
