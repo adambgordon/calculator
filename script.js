@@ -492,7 +492,7 @@ function logResult (left, operator, right, result) {
             newOperator = "–";
             break;
         case "*":
-            newOperator = "x";
+            newOperator = "\u00D7";
             break;
         default:
             newOperator = operator;
